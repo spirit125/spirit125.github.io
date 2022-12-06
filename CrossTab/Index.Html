@@ -1,0 +1,160 @@
+﻿<html>
+<head>
+<title></title>
+	<link type="text/css" href="css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />	
+    <link type="text/css" href="css/PageCSS.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.14.custom.min.js"></script>
+    <script type="text/javascript" src="js/funs.js"></script>
+    <script type="text/javascript" src="js/SampleData.js"></script>
+    <script type="text/javascript" src="js/DataEditor.js"></script>
+    <script type="text/javascript" src="js/CrossTabSetting.js"></script>
+    <script type="text/javascript" src="js/CrossTabData.js"></script>
+    <script type="text/javascript" language="javascript">
+        var DEditor;
+        var CTSetting;
+        var Cols; //Top
+        var Rows; //Left
+        var Datas; //Right
+        var CTData;
+
+        function page_load() {
+        }
+
+        function ChgHeight() {
+            var avHeight = document.body.offsetHeight;
+            var div1 = document.getElementById("DivDataEditor");
+            var dw1 = (avHeight - div1.offsetTop - 60);
+            if (dw1 > 0) div1.style.height = dw1 + "px";
+        }
+
+        function OpenCrossTab() {
+            Cols = CTSetting.Cols();
+            Rows = CTSetting.Rows();
+            Datas = CTSetting.Datas();
+
+            if (Cols && Cols.length > 0 && Rows && Rows.length > 0 && Datas && Datas.length > 0) {
+                var PObj = new CrossTabData();
+                var DataTable = data["Oltp1"]["Tables"][0];
+                CTData = PObj.RunData(DataTable, Cols, Rows, Datas);
+
+                var cwin = window.open("CrossTabGrid.html");
+            }
+        }
+
+        $(function () {
+            $("#sortable1, #sortable").sortable({
+                connectWith: ".connectedSortable"
+            }).disableSelection();
+
+            var jtabs = $("#tabs");
+            jtabs.tabs();
+            jtabs.bind('tabsselect', function (event, ui) {
+                //ui.tab ui.panel ui.index
+            });
+
+            ChgHeight();
+            var DataTable = data["Oltp1"]["Tables"][0];
+            DEditor = new DataEditor(document.getElementById("DivDataEditor"), DataTable);
+            CTSetting = new CrossTabSetting("sortable_top", "sortable_left", "sortable_right", "sortable_list", DataTable);
+
+            $(window).resize(function (event, ui) {
+                ChgHeight();
+            });
+        });
+
+    </script>
+</head>
+<body onload="page_load()">
+
+    <div class="demo">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Data</a></li>
+                <li><a href="#tabs-2">CrossTab</a></li>
+            </ul>
+            <div id="tabs-1">
+                <p>
+                    以下資料是透過ADO.NET連接資料庫：AdventureWorks、執行SQL語法：<br /> 
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:blue;
+mso-font-kerning:0pt;mso-no-proof:yes'>select</span><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New";mso-font-kerning:0pt;
+mso-no-proof:yes'> <span style='color:blue'>top</span> 100 SalesOrderNumber<span
+style='color:gray'>,</span> <span style='color:fuchsia'>year</span><span
+style='color:gray'>(</span>OrderDate<span style='color:gray'>)</span> <span
+style='color:blue'>as</span> OrderYear<span style='color:gray'>, </span><span
+style='color:fuchsia'>Month</span><span style='color:gray'>(</span>OrderDate<span
+style='color:gray'>)</span> <span style='color:blue'>as</span> OrderMonth<span
+style='color:gray'>,</span> <span style='color:fuchsia'>Day</span><span
+style='color:gray'>(</span>OrderDate<span style='color:gray'>)</span> <span
+style='color:blue'>as</span> OrderDay<span style='color:gray'>,</span>
+CustomerID<span style='color:gray'>,</span> ContactID<span style='color:gray'>,</span>
+SalesPersonID<span style='color:gray'>,</span> TerritoryID<span
+style='color:gray'>,</span> SubTotal<span style='color:gray'>,</span> TaxAmt<span
+style='color:gray'>,</span> Freight<span style='color:gray'>,</span> TotalDue <span
+style='color:blue'>from</span> Sales<span style='color:gray'>.</span>SalesOrderHeader
+t1 <span style='color:blue'>order</span> <span style='color:blue'>by</span> t1<span
+style='color:gray'>.</span>CustomerID</span></p>
+                     得到的DataSet再轉成json格式讓JavaScript讀取。</p>
+
+                     <div id="DivDataEditor" style=" width:100%; overflow:scroll;"></div>
+            </div>
+            <div id="tabs-2">
+                <table id="DetailRepeater_CrossTab_Table" class="CrossTabSt_Table" border="0" style="width: 90%;">
+                    <tr>
+                        <td align="left" valign="middle" style="width: 70%;">
+                            <table id="DetailRepeater_CrossTab_MainTable" cellspacing="3" cellpadding="0" border="0"
+                                style="width: 100%;">
+                                <tr>
+                                    <td class="CrossTabSt_MainTable_TD" style="height: 15pt; width: 30%">
+                                    </td>
+                                    <td id="DetailRepeater_CrossColumns" class="CrossTabSt_MainTable_TD" over="false" style="height: 15pt;
+                                        width: 70%">
+                                        <div id="DetailRepeater_Cross_ColumnTitle" style="text-align: center;">
+                                            欄(Column)
+                                        </div>
+                                        <ul id="sortable_top" style="height:26px;">
+                                            
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="DetailRepeater_CrossRows" class="CrossTabSt_MainTable_TD" valign="top" over="false"
+                                        style="height: 100pt; width: 30%">
+                                        <div id="DetailRepeater_Cross_RowTitle" style="text-align: center;">
+                                            列(Row)
+                                        </div>
+                                        <ul id="sortable_left" style="height:30px;">
+                                            
+                                        </ul>
+                                    </td>
+                                    <td id="DetailRepeater_CrossDatas" class="CrossTabSt_MainTable_TD" valign="top" over="false"
+                                        style="height: 100pt; width: 70%">
+                                        <div id="DetailRepeater_Cross_DataTitle" style="text-align: center;">
+                                            資料(Data)
+                                        </div>
+                                        <ul id="sortable_right" style="height:30px;">
+                                            
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td id="DetailRepeater_CrossCanSelectColumns" class="CrossTabSt_CanSelectColumns" align="left"
+                            valign="top" style="width:30%">
+                            可選擇欄位：
+                            <ul id="sortable_list" style="width:100%;height:30px;" >
+                                
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                <input type="button" onclick="OpenCrossTab()" value="Open CrossTab" />
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

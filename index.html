@@ -1,10 +1,201 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>個人GitHub</title>
-  </head>
-  <body>
-    <a onclick="alert('js')"><h1>覺得厲害</h1></a>
-  </body>
+<head>
+<title></title>
+	<link type="text/css" href="css/humanity/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+
+	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.14.custom.min.js"></script>
+    <script type="text/javascript" language="javascript">
+        
+        function page_load() {
+        }
+
+        $(function () {
+            var IsSimple = true;
+            if (IsSimple) {
+                document.getElementById("VdCrossTab").style.display = "none";
+
+                document.getElementById("SpFlex").style.display = "none";
+                document.getElementById("VdFlex").style.display = "none";
+
+                document.getElementById("SpSQLGenerator").style.display = "none";
+                document.getElementById("VdSQLGenerator").style.display = "none";
+
+                document.getElementById("SpHumanEnergentic").style.display = "none";
+                document.getElementById("VdHumanEnergentic").style.display = "none";
+
+                document.getElementById("VdHtml5Sample").style.display = "none";
+                document.getElementById("VdAdrSample").style.display = "none";
+            }
+
+            $("#accordion").accordion({
+                fillSpace: true
+            });
+        });
+
+    </script>
+</head>
+<body onload="page_load()">
+    <div class="demo-description">
+            <h1><center>陳信宏的作品集</center></h1>
+    </div>
+    <div class="demo">
+        <div id="accordion">
+            <h3>
+                <a href="#">樞紐分析（HTML、CSS、JavaScript）</a></h3>
+            <div style="height: 450px; padding-top:0px;">
+                <p>
+                <b>開發語言：</b>HTML、CSS、JavaScript（包含 jquery、jquery-ui）
+                </p>
+                <p id="SpCrossTab">
+                <b>作品路徑：</b><a target="_blank" href="CrossTab/Index.Html">CrossTab\Index.Html</a>
+                </p>
+                <p id="VdCrossTab">
+                <b>影片播放：</b><a target="_blank" href="CrossTab/video/CrossTab.htm">CrossTab\video\CrossTab.htm</a>
+                </p>
+                <a target="_blank" href="images\CrossTab_p1.PNG"><img border="0" src="images\CrossTab_p1.PNG" width="400"></a>
+                <a target="_blank" href="images\CrossTab_p2.PNG"><img border="0" src="images\CrossTab_p2.PNG" width="400"></a>
+                <a target="_blank" href="images\CrossTab_p3.PNG"><img border="0" src="images\CrossTab_p3.PNG" width="400"></a>
+                    <blockquote>
+                <p></p>
+                    第一個頁籤「Data」代表此樞紐分析程式的資料來源， 它是透過ADO.NET連接資料庫：AdventureWorks、執行SQL語法：<br /> 
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:blue;
+mso-font-kerning:0pt;mso-no-proof:yes'>select</span><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New";mso-font-kerning:0pt;
+mso-no-proof:yes'> <span style='color:blue'>top</span> 100 SalesOrderNumber<span
+style='color:gray'>,</span> <span style='color:fuchsia'>year</span><span
+style='color:gray'>(</span>OrderDate<span style='color:gray'>)</span> <span
+style='color:blue'>as</span> OrderYear<span style='color:gray'>, </span><span
+style='color:fuchsia'>Month</span><span style='color:gray'>(</span>OrderDate<span
+style='color:gray'>)</span> <span style='color:blue'>as</span> OrderMonth<span
+style='color:gray'>,</span> <span style='color:fuchsia'>Day</span><span
+style='color:gray'>(</span>OrderDate<span style='color:gray'>)</span> <span
+style='color:blue'>as</span> OrderDay<span style='color:gray'>,</span>
+CustomerID<span style='color:gray'>,</span> ContactID<span style='color:gray'>,</span>
+SalesPersonID<span style='color:gray'>,</span> TerritoryID<span
+style='color:gray'>,</span> SubTotal<span style='color:gray'>,</span> TaxAmt<span
+style='color:gray'>,</span> Freight<span style='color:gray'>,</span> TotalDue <span
+style='color:blue'>from</span> Sales<span style='color:gray'>.</span>SalesOrderHeader
+t1 <span style='color:blue'>order</span> <span style='color:blue'>by</span> t1<span
+style='color:gray'>.</span>CustomerID</span></p>
+                    得到的DataSet再轉成json格式讓JavaScript讀取。<br />
+                    在這個頁籤裡，可以做資料的修改。
+                <p></p>
+                    第二個頁籤「CrossTab」為樞紐分析的設定畫面，只要分為「欄」、「列」、「資料」三區， 透過拖拉的方式將欄位放到「欄」、「列」、「資料」或是拖拉將欄位移出。<br />
+                    最後按下「Open CrossTab」按紐，程式會將在「Data」頁籤的當資料來源， 再依「CrossTab」頁籤的設定，產生樞紐分析資料。
+                <p>
+                    最後出現呈現樞紐分析的DataGrid，這個DataGrid在左邊、上面都能顯示多層header，而且還有凍結視窗的功能。</p>
+                    </blockquote><p>&nbsp;</p>
+
+
+            </div>
+            <h3>
+                <a href="#">簡易檔案總管（Flex）</a></h3>
+            <div style="height: 215px; padding-top:0px;">
+                <p>
+                <b>開發技術：</b>Flex（ActionScript 3）
+                </p>
+                <p id="SpFlex">
+                <b>作品路徑：</b><a target="_blank" href="Flex/MainPage.html">Flex\MainPage.html</a>
+                </p>
+                <p id="VdFlex">
+                <b>影片播放：</b><a target="_blank" href="Flex/video/Flex.htm">Flex\video\Flex.htm</a>
+                </p>
+                <a target="_blank" href="images\Flex_p1.PNG"><img border="0" src="images\Flex_p1.PNG" width="400"></a>
+                    <blockquote>
+                    使用Adobe Flex Builder 3開發的程式，做出小型檔案總管的畫面。<br />左邊的Tree可以用拖拉的方式做資料夾的搬移。
+                    </blockquote><p>&nbsp;</p>
+            </div>
+            <h3>
+                <a href="#">SQL產生器（Silverlight）</a></h3>
+            <div style="height: 215px; padding-top:0px;">
+                <p>
+                <b>開發技術：</b>Silverlight（C#）
+                </p>
+                <p id="SpSQLGenerator">
+                <b>作品路徑：</b><a target="_blank" href="SQLGenerator/TestPage.html">SQLGenerator\TestPage.html</a>
+                </p>
+                <p id="VdSQLGenerator">
+                <b>影片播放：</b><a target="_blank" href="SQLGenerator/video/SQLGenerator.htm">SQLGenerator\video\SQLGenerator.htm</a>
+                </p>
+                <a target="_blank" href="images\SqlServer.PNG"><img border="0" src="images\SqlServer.PNG" width="400"></a><br />
+                <a target="_blank" href="images\SQLGenerator_p1.PNG"><img border="0" src="images\SQLGenerator_p1.PNG" width="400"></a>
+                <a target="_blank" href="images\SQLGenerator_p2.PNG"><img border="0" src="images\SQLGenerator_p2.PNG" width="400"></a>
+                    <blockquote>
+                    此程式與SQL Server的SQL Editor是一樣的功能。<br />
+                    不過因為是用Silverlight開發，所以這個是Web版的SQL Editor<p></p>
+                    第一個頁籤「Design Table Schema」可以對資料庫內所有的Table與欄位做Schema編輯。<br />
+                    新增、刪除Table或是新增、修改欄位的型別。<p></p>
+                    第二個頁籤「SQL Generator」是以第一個頁籤的資料作為Schema來源。使用者操作有二種方式：<br />
+                    一、由上至下新增Table、勾選欄位、中間的設定，產生最底下的SQL字串。<br />
+                    二、對底下的SQL區輸入或編輯SQL字串，程式會解析SQL字串，產生中間、上面的畫面。<br />
+                    </blockquote><p>&nbsp;</p>
+                    
+            </div>
+            <h3>
+                <a href="#">現金帳、倉庫庫存管理系統（WPF）</a></h3>
+            <div style="height: 215px; padding-top:0px;">
+                <p>
+                <b>開發技術：</b>WPF（C#）
+                </p>
+                <p id="SpHumanEnergentic">
+                <b>作品路徑：</b><a target="_blank" href="HumanEnergentic/HumanEnergentic.exe">HumanEnergentic\HumanEnergentic.exe</a>
+                </p>
+                <p id="VdHumanEnergentic">
+                <b>影片播放：</b><a target="_blank" href="HumanEnergentic/video/HumanEnergentic.htm">HumanEnergentic\video\HumanEnergentic.htm</a>
+                </p>
+                <a target="_blank" href="images\HumanEnergentic_p1.jpg"><img border="0" src="images\HumanEnergentic_p1.jpg" width="400"></a>
+                <a target="_blank" href="images\HumanEnergentic_p2.jpg"><img border="0" src="images\HumanEnergentic_p2.jpg" width="400"></a>
+                    <blockquote>
+                    這個程式是以前幫「新北市人體潛能養生氣功發展協會」寫的管理系統，<br />
+                    它主要功能用來記錄現金帳、制服庫存數量，<br />
+                    每次現金帳或庫存有變動時，透過系統輸入資料，所輸入的資料存在Access內。<br />
+                    系統可對輸入過的資料做查詢，或是轉出報表（Excel）。<br />
+                    </blockquote><p>&nbsp;</p>
+            </div>
+            <h3>
+                <a href="#">Game（HTML5）</a></h3>
+            <div style="height: 215px; padding-top:0px;">
+                <p>
+                <b>開發語言：</b>HTML5、CSS、JavaScript
+                </p>
+                <p id="SpHtml5Sample">
+                <b>作品路徑：</b><a target="_blank" href="Html5Sample/DownTheStairs.html">Html5Sample\DownTheStairs.html</a>
+                </p>
+                <p id="VdHtml5Sample">
+                <b>影片播放：</b><a target="_blank" href="Html5Sample/video/Html5Sample.htm">Html5Sample\video\Html5Sample.htm</a>
+                </p>
+                <a target="_blank" href="images\Html5Sample_p1.PNG"><img border="0" src="images\Html5Sample_p1.PNG" width="400"></a>
+                    <blockquote>
+                    這個程式是使用HTML5新技術所做出的Game，<br />
+                    可以讓瀏覽器不用安裝flash player也能做出動畫效果。<p></p>
+                    不過因為是使用HTML5的技術，所以必須使用支援Html5 Canvas的瀏覽器才能正確執行此網頁。<br />
+                    例如：Chromium 9.0.598.0以上版本 或 Safari 5.0.4以上版本。
+                    </blockquote><p>&nbsp;</p>
+            </div>
+            <h3>
+                <a href="#">計算機、瀏覽圖片（Android）</a></h3>
+            <div style="height: 215px; padding-top:0px;">
+                <p>
+                <b>開發技術：</b>Eclipse IDE、Android SDK
+                </p>
+                <p id="VdAdrSample">
+                <b>影片播放：</b><a target="_blank" href="AdrSample/video/AdrSample.htm">AdrSample\video\AdrSample.htm</a>
+                </p>
+                <a target="_blank" href="images\AdrSample_p1.jpg"><img border="0" src="images\AdrSample_p1.jpg" width="400"></a>
+                <a target="_blank" href="images\AdrSample_p2.jpg"><img border="0" src="images\AdrSample_p2.jpg" width="400"></a><br />
+                <a target="_blank" href="images\AdrSample_p3.jpg"><img border="0" src="images\AdrSample_p3.jpg" width="400"></a>
+                <a target="_blank" href="images\AdrSample_p4.jpg"><img border="0" src="images\AdrSample_p4.jpg" width="400"></a>
+                    <blockquote>
+                    主畫面是簡單的個人介紹，按下「呼叫範例」按鈕後會出現Menu，可選擇要開啟哪一個範例。<br />
+                    第一個範例是計算機程式；第二個範例是瀏覽手機內圖片的範例。
+                    </blockquote><p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+
+</body>
 </html>

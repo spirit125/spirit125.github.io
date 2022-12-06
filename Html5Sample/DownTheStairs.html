@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .TitleTable
+        {
+            margin-left: 50px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        
+        input[type="button"]
+        {
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 24px;
+            background-color: #7ac000;
+            padding: 5px 36px 8px 36px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            background: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0.23, #619702),
+	    color-stop(0.62, #7ac000)
+	);
+            background: -moz-linear-gradient(
+	    center bottom,
+	    #619702 23%,
+	    #7ac000 62%
+	);
+        }
+        
+        input[type="button"]:hover
+        {
+            color: #fff;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+            background-color: #ff5400;
+            background: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0.23, #c34000),
+	    color-stop(0.62, #ff5400)
+	);
+            background: -moz-linear-gradient(
+	    center bottom,
+	    #c34000 23%,
+	    #ff5400 62%
+	);
+        }
+        
+        input[type="button"]:active
+        {
+            position: relative;
+            top: 1px;
+        }
+    </style>
+    <script type="text/javascript" language="javascript">
+        //T:w383 h350 P:w30 h30 F:w95 h15
+        var PObj;
+        var FloorArray = new Array();
+        var TimeID_FloorUp;
+        var TimeID_Draw;
+        var TimeID_PMove;
+        var TimeID_AddFloor;
+        var GameOver = true;
+        var StartTime;
+        var AddFloorTime;
+        var TouchX;
+
+        var FUp = -4;
+        var PUp = 10;
+        var DefAddFloorTime = 500;
+        var MaxAddFloorTime = 1000;
+        var ReflashTime = 30;
+        var MoveTime = 60;//100
+        var MoveStep = 15;//25
+        var TWidth = 600;
+        var THeight = 550;
+
+        function People() {
+            this.X = 280;
+            this.Y = 509;
+            this.W = 50;
+            this.H = 50;
+            this.IsDrop = false;
+            this.State = "stop"; //stop、left、right
+
+            var drawEllipse = function(context, centerX, centerY, width, height, fillColor) {
+                context.beginPath();
+
+                context.moveTo(centerX, centerY - height / 2); // A1
+
+                context.bezierCurveTo(
+                    centerX + width / 2, centerY - height / 2, // C1
+                    centerX + width / 2, centerY + height / 2, // C2
+                    centerX, centerY + height / 2); // A2
+
+                context.bezierCurveTo(
+                    centerX - width / 2, centerY + height / 2, // C3
+                    centerX - width / 2, centerY - height / 2, // C4
+                    centerX, centerY - height / 2); // A1
+
+                context.fillStyle = fillColor;
+                context.fill();
+                context.closePath();
+            }
+
+            this.Draw = function (ctx) {
+                ctx.beginPath();
+                ctx.rect(this.X, this.Y, this.W, this.H);
+                ctx.fillStyle = "tomato";
+                ctx.fill();
+                ctx.closePath();
+
+                var eyeX = this.W / 4;
+                var eyeY = this.H / 4;
+                var eyeW = this.W / 10 * 3; //15
+                var eyeH = this.H / 5 * 2; //20
+                if (this.IsDrop) {
+                    eyeW = eyeW / 2;
+                    eyeH = eyeH / 2;
+                }
+                if (this.State == "stop") {
+                    drawEllipse(ctx, this.X + eyeX, this.Y + eyeY, eyeW, eyeH, "black");
+                    drawEllipse(ctx, this.X + this.W - eyeX, this.Y + eyeY, eyeW, eyeH, "black");
+
+                    var mouthSX = this.W / 10;
+                    var mouthSY = this.H / 2;
+                    var mouthEX = this.W - mouthSX;
+                    var mouthEY = mouthSY;
+                    ctx.beginPath();
+                    ctx.moveTo(this.X + mouthSX, this.Y + mouthSY);
+                    ctx.quadraticCurveTo(this.X + this.W / 2, this.Y + this.H * 1.3, this.X + mouthEX, this.Y + mouthEY);
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                }
+                else if (this.State == "left") {
+                    eyeX = this.W * 1 / 5;
+                    drawEllipse(ctx, this.X + eyeX, this.Y + eyeY, eyeW, eyeH, "black");
+
+                    var mouthSX = 2;
+                    var mouthSY = this.H * 3 / 5;
+                    var mouthEX = this.W * 2 / 3;
+                    var mouthEY = this.H * 3 / 5;
+                    ctx.beginPath();
+                    ctx.moveTo(this.X + mouthSX, this.Y + mouthSY);
+                    ctx.quadraticCurveTo(this.X + this.W / 4, this.Y + this.H * 1.2, this.X + mouthEX, this.Y + mouthEY);
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+
+                    var earX = this.W * 0.75;
+                    var earY = this.H * 1 / 3;
+                    ctx.beginPath();
+                    ctx.arc(this.X + earX, this.Y + earY, this.W / 10, 0, Math.PI * 2, true);
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                }
+                else if (this.State == "right") {
+                    eyeX = this.W * 4 / 5;
+                    drawEllipse(ctx, this.X + eyeX, this.Y + eyeY, eyeW, eyeH, "black");
+
+                    var mouthSX = this.W * 1 / 3;
+                    var mouthSY = this.H * 3 / 5;
+                    var mouthEX = this.W - 2;
+                    var mouthEY = this.H * 3 / 5;
+                    ctx.beginPath();
+                    ctx.moveTo(this.X + mouthSX, this.Y + mouthSY);
+                    ctx.quadraticCurveTo(this.X + this.W * 3 / 4, this.Y + this.H * 1.2, this.X + mouthEX, this.Y + mouthEY);
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+
+                    var earX = this.W * 0.25;
+                    var earY = this.H * 1 / 3;
+                    ctx.beginPath();
+                    ctx.arc(this.X + earX, this.Y + earY, this.W / 10, 0, Math.PI * 2, true);
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function Floor() {
+            this.X = 250;
+            this.Y = 560;
+            this.W = 145;
+            this.H = 22;
+            this.Draw = function (ctx) {
+                ctx.fillStyle = "navy";
+                ctx.beginPath();
+                ctx.rect(this.X, this.Y, this.W, this.H); //.rect(topLeftCornerX,topLeftCornerY,width,height); 
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function PageLoad() {
+            document.getElementById("btnStart").onclick = btnStartClick;
+            document.onkeydown = KeydownEvent;
+            document.onkeyup = KeyupEvent;
+
+            var UseTouch = (typeof window.Touch == "object");
+            if (UseTouch) {
+                DefAddFloorTime = DefAddFloorTime * 4;
+                MaxAddFloorTime = MaxAddFloorTime * 4;
+
+                document.addEventListener("touchstart", TouchEvent, false);
+                document.addEventListener("touchmove", TouchEvent, false);
+                document.addEventListener("touchend", TouchEndEvent, false);
+            }
+        }
+
+        function btnStartClick()
+        {
+            var btnStart = document.getElementById("btnStart");
+            if (btnStart.value == "Start")
+                StartGame();
+            else
+                PauseGame();
+        }
+
+        function StartGame() {
+            if (GameOver) {
+                GameOver = false;
+                StartTime = new Date();
+                PObj = new People();
+                FloorArray = new Array();
+                FloorArray.push(new Floor());
+                AddFloorTime = DefAddFloorTime;
+            }
+            TimeID_FloorUp = setInterval(LayoutMh, ReflashTime);
+            TimeID_AddFloor = setTimeout("AddFloor()", AddFloorTime);
+            TimeID_Draw = setInterval(DrawLayout, ReflashTime);
+            TimeID_PMove = "";
+            document.getElementById("btnStart").value = "Pause";
+        }
+
+        function PauseGame() {
+            clearInterval(TimeID_FloorUp);
+            clearTimeout(TimeID_AddFloor);
+            clearInterval(TimeID_Draw);
+            clearInterval(TimeID_PMove);
+            document.getElementById("btnStart").value = "Start";
+        }
+
+        function ClearGame() {
+            GameOver = true;
+            PauseGame();
+            alert("Game over!");
+        }
+
+        function CheckDrop(AllF, FindType) {
+            var RetValue = new Array();
+            var aLen = AllF.length;
+            for (var i = 0; i < aLen; i++) {
+                if (AllF[i].X < PObj.X + PObj.W && AllF[i].X + AllF[i].W > PObj.X) {
+                    var BY = PObj.Y + PObj.H + 1;
+                    if (FindType == "up") {
+                        if (AllF[i].Y < BY) RetValue.push(AllF[i]);
+                    }
+                    else {//down
+                        if (AllF[i].Y + AllF[i].H > BY) RetValue.push(AllF[i]);
+                    }
+                }
+            }
+            return RetValue;
+        }
+
+        function LayoutMh() {
+            var aLen = FloorArray.length;
+            var NObjs = new Array();
+
+            var DownFloor = CheckDrop(FloorArray, "down");
+            for (var i = 0; i < aLen; i++) {
+                FloorArray[i].Y += FUp;
+                if (FloorArray[i].Y + FloorArray[i].H > 0) NObjs.push(FloorArray[i]);
+            }
+            PObj.Y += PUp;
+            var OFloor = CheckDrop(DownFloor, "up");
+            if (OFloor.length > 0) {
+                PObj.IsDrop = false;
+                PObj.Y = OFloor[0].Y - PObj.H - 1;
+            }
+            else {
+                PObj.IsDrop = true;
+            }
+
+            if (PObj.Y > THeight || PObj.Y <= 0) {
+                ClearGame();
+            }
+
+            FloorArray = NObjs;
+        }
+
+        function AddFloor() {
+            if (GameOver) return;
+
+            var NewFloor = new Floor();
+            NewFloor.X = Math.random() * ((TWidth - NewFloor.W) + 1);
+            NewFloor.Y = THeight - NewFloor.H;
+            FloorArray.push(NewFloor);
+            AddFloorTime += 10;
+            if (AddFloorTime > MaxAddFloorTime) AddFloorTime = MaxAddFloorTime;
+
+            TimeID_AddFloor = setTimeout("AddFloor()", AddFloorTime);
+        }
+
+        function KeydownEvent() {
+            if (PObj == null) return;
+            switch (event.keyCode) {
+                // Left arrow.
+                case 37:
+                    if (TimeID_PMove == "")
+                        TimeID_PMove = setInterval(MoveLeft, MoveTime);
+                    break;
+
+                // Right arrow.  
+                case 39:
+                    if (TimeID_PMove == "")
+                        TimeID_PMove = setInterval(MoveRight, MoveTime);
+                    break;
+            }
+        }
+
+        function KeyupEvent() {
+            if (PObj == null) return;
+            PObj.State = "stop";
+            clearInterval(TimeID_PMove);
+            TimeID_PMove = "";
+        }
+
+        function MoveLeft() {
+            PObj.State = "left";
+            PObj.X = PObj.X - MoveStep;
+            if (PObj.X < 0) PObj.X = 0;
+        }
+
+        function MoveRight() {
+            PObj.State = "right";
+            PObj.X = PObj.X + MoveStep;
+            if (PObj.X > TWidth - PObj.W) PObj.X = TWidth - PObj.W;
+        }
+
+        function TouchEvent(e) {
+            if (PObj == null) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            var touches = e.changedTouches;
+            var first = touches[0];
+            TouchX = first.clientX;
+            if (TimeID_PMove == "") {
+                TimeID_PMove = setInterval(TouchMove, MoveTime);
+            }
+        }
+
+        function TouchMove() {
+            if (PObj.X > TouchX) {
+                PObj.State = "left";
+                PObj.X -= MoveStep;
+                if (PObj.X < TouchX) PObj.X = TouchX;
+            }
+            else if (PObj.X < TouchX) {
+                PObj.State = "right";
+                PObj.X += MoveStep;
+                if (PObj.X > TouchX) PObj.X = TouchX;
+            }
+            if (PObj.X < 0) PObj.X = 0;
+            if (PObj.X > TWidth - PObj.W) PObj.X = TWidth - PObj.W;
+        }
+
+        function TouchEndEvent(e) {
+            if (PObj == null) return;
+            PObj.State = "stop";
+            clearInterval(TimeID_PMove);
+            TimeID_PMove = "";
+        }
+
+        function DrawLayout() {
+            var t2 = new Date();
+            var TimeText = (Math.round(((t2 - StartTime) / 100)) / 10).toString();
+            if (TimeText.indexOf(".") == -1)
+                TimeText = TimeText + ".0";
+            document.getElementById("lblTime").innerText = TimeText;
+
+            var canvas = document.getElementById("gameBoard");
+            if (!canvas.getContext) return;
+            var ctx = canvas.getContext("2d");
+            // Clear the board.
+            ctx.clearRect(0, 0, TWidth, THeight);
+
+            // Fill the board.
+            ctx.fillStyle = "thistle";
+            ctx.beginPath();
+            ctx.rect(0, 0, TWidth, THeight);
+            ctx.closePath();
+            ctx.fill();
+
+            for (var i = 0; i < FloorArray.length; i++) {
+                FloorArray[i].Draw(ctx)
+            }
+            PObj.Draw(ctx)
+        }
+
+    </script>
+</head>
+<body onload="PageLoad()">
+        <table class="TitleTable">
+            <tr>
+                <td>
+                    <label>Time:</label>
+                </td>
+                <td style="width: 85px; text-align:center;">
+                    <label id="lblTime" style="color:Blue;">
+                    </label>
+                </td>
+                <td style="width: 150px; text-align:left;">
+                    <label>Second</label>
+                </td>
+                <td>
+                    <input name="btnStart" type="button" id="btnStart" tabindex="5" value="Start" />
+                </td>
+            </tr>
+        </table>
+    
+    <div>
+      <canvas id="gameBoard" width="600" height="550">
+      </canvas>
+    </div>
+</body>
+</html>

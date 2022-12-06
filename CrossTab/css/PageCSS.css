@@ -1,0 +1,77 @@
+﻿body 
+{
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+}
+
+.DEd_tbl
+{
+	border: none;
+}
+
+.DEd_HeaderTR
+{
+	background-image: -webkit-gradient(   linear, left top, left bottom, from(#ccccff), to(#ffffff) );
+}
+
+.DEd_HeaderTR TD
+{
+	padding: 4px;
+}
+
+.DEd_TR
+{
+}
+
+.DEd_TR TD
+{
+	padding: 0px;
+}
+
+.CrossTabSt_Table, .CrossTabSt_MainTable_TD, .CrossTabSt_CanSelectColumns
+{
+	border-width:1pt;
+	border-style:solid;
+}
+
+#sortable_top, #sortable_left, #sortable_right, #sortable_list { list-style-type: none; margin: 0; padding: 0; }
+#sortable_top li, #sortable_left li, #sortable_right li, #sortable_list li { margin: 3px 3px 3px 0; padding: 1px; font-size: 17px; height: 1.5em; cursor:move; }
+#sortable_top li { float: left; width:70px; }
+#sortable_list { width:100px; margin: 5px;  }
+     
+
+.CrossTab_Table
+{
+	border: none;
+	margin:0;
+}
+
+.CrossTab_TopHeaderTR
+{
+	font-family:Arial;
+	Color:White;
+	background-color: #5D7B9D;
+	font-weight:bold;
+	vertical-align:middle;
+}
+
+.CrossTab_LeftHeaderTR
+{
+	Color:#333333;
+	background-color:#F7F6F3;
+	font-weight: normal;
+	vertical-align: top;
+}
+
+.CrossTab_DataTR
+{
+	Color:#284775;
+	background-color:White;
+	font-weight: normal;
+	vertical-align: top;
+}
+
+.CrossTab_DataTR TD
+{
+	padding-left:4px;
+	padding-right:4px;
+}

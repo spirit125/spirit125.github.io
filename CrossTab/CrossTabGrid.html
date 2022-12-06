@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link type="text/css" href="css/PageCSS.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="js/funs.js"></script>
+    <script type="text/javascript" src="js/CrossTabGrid.js"></script>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var PDiv = document.getElementById("div1");
+            var CTData = opener.CTData;
+            var Cols = opener.Cols;
+            var Rows = opener.Rows;
+            var Datas = opener.Datas;
+            var Div1 = document.getElementById("div1");
+            var Div2 = document.getElementById("div2");
+            var Div3 = document.getElementById("div3");
+            var Div4 = document.getElementById("div4");
+            if (Cols && Cols.length > 0 && Rows && Rows.length > 0 && Datas && Datas.length > 0) {
+                var cgObj = new CreateGrid(CTData, Cols, Rows, Datas, Div1, Div2, Div3, Div4);
+                $(window).resize(function () {
+                    cgObj.FixDivSize();
+                });
+            }
+        })
+    </script>
+</head>
+<body>
+    <table border="0" cellspacing="0" cellpadding="0" style="">
+        <tr>
+            <td>
+                <div id="div1">
+                </div>
+            </td>
+            <td>
+                <div id="div2" style="overflow: hidden;">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="div3" style="overflow: hidden;">
+                </div>
+            </td>
+            <td>
+                <div id="div4" style="overflow: scroll;">
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
